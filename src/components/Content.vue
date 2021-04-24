@@ -118,7 +118,7 @@ export default {
     busqueda(nombre) {
       console.log(nombre);
       this.axios
-        .get(`https://wizardly-beaver-ed37ae.netlify.app/search?q=${nombre}`)
+        .get(`https://cancionesapicors.netlify.app/search?q=${nombre}`)
         .then((res) => {
           this.canciones = res.data.data;
           console.log(this.canciones);
@@ -129,9 +129,7 @@ export default {
     },
     async alerta(cancion) {
       const obteniendo = await this.axios
-        .get(
-          `https://wizardly-beaver-ed37ae.netlify.app/artist/${cancion.artist.id}`
-        )
+        .get(`https://cancionesapicors.netlify.app/artist/${cancion.artist.id}`)
         .then((res) => {
           // this.cancion = { ...cancion, artista: res.data };
           // console.log(this.cancion);

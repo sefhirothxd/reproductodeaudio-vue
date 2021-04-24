@@ -1,18 +1,30 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="flex justify-center flex-col bg-grey-title-music">
+    <div class="max-w-7xl w-full mx-auto relative">
+      <div class="w-full flex justify-center">
+        <Slite />
+        <Content />
+      </div>
+      <PlayBar />
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Slite from "@/components/Slite.vue";
+import Content from "@/components/Content.vue";
+import PlayBar from "@/components/PlayBar.vue";
 
 export default {
-  name: 'Home',
+  name: "Home",
+  data() {
+    return {};
+  },
   components: {
-    HelloWorld
-  }
-}
+    Slite,
+    Content,
+    PlayBar,
+  },
+  methods: {},
+};
 </script>

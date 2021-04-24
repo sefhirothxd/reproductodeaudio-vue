@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	p,
+	li,
+	ul,
+	button {
+		@apply font-Quicksand;
+	}
+}
+
+.btn {
+	@apply pl-10;
+	@apply text-white;
+	@apply text-base;
+	@apply font-normal;
+}
+.btn:hover {
+	@apply pl-9;
+	@apply border-l-5px;
+	@apply border-red-principal;
+}

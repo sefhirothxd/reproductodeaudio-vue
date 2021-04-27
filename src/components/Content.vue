@@ -118,7 +118,9 @@ export default {
     busqueda(nombre) {
       console.log(nombre);
       this.axios
-        .get(`https://api.deezer.com/search?q=${nombre}`)
+        .get(
+          `https://pure-stream-06458.herokuapp.com/https://api.deezer.com/search?q=${nombre}`
+        )
         .then((res) => {
           this.canciones = res.data.data;
           console.log(this.canciones);
@@ -129,7 +131,9 @@ export default {
     },
     async alerta(cancion) {
       const obteniendo = await this.axios
-        .get(`https://api.deezer.com/artist/${cancion.artist.id}`)
+        .get(
+          `https://pure-stream-06458.herokuapp.com/https://api.deezer.com/artist/${cancion.artist.id}`
+        )
         .then((res) => {
           // this.cancion = { ...cancion, artista: res.data };
           // console.log(this.cancion);

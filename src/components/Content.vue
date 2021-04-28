@@ -22,8 +22,12 @@
         <p>Francisco M.</p>
       </div>
     </div>
-    <div class="sm:flex mt-10 hidden" v-if="seleccionado">
-      <img class="" :src="cancion.album.cover_medium" alt="adelen" />
+    <div class="sm:flex mt-10 hidden h-64">
+      <img
+        class="object-cover"
+        :src="cancion.album.cover_medium"
+        alt="adelen"
+      />
       <div
         class="text-white pt-5 pl-4 lg:pt-10 lg:pl-8 relative overflow-hidden bg-color-musica-fondo bg-opacity-40"
       >
@@ -37,14 +41,14 @@
               >
             </div>
           </section>
-          <section class="mb-14">
+          <section class="mb-10">
             <p class="text-xs pr-10 leading-5">
               Adele Laurie Blue Adkins (Tottenham, Londres, Inglaterra, 5 de
               mayo de 1988), conocida simplemente como Adele, es una cantante,
               compositora y multinstrumentista británica.8​
             </p>
           </section>
-          <div class="flex gap-6 pb-4 items-center">
+          <div class="flex gap-6 pb-10 items-center">
             <button
               v-if="!isPlaying"
               class="bg-red-principal rounded-full text-white py-2 px-6"
@@ -75,21 +79,23 @@
     </div>
     <div class="mt-10">
       <h2 class="text-red-principal text-22px text-left mb-5">Resultados</h2>
-      <div class="flex flex-wrap gap-4 justify-center">
+      <div
+        class="flex flex-wrap gap-4 justify-center overflow-y-auto h-content-lg sm:h-content w-full"
+      >
         <div
           class=""
-          @click="alerta(cancion)"
-          v-for="(cancion, index) in canciones"
+          @click="alerta(item)"
+          v-for="(item, index) in canciones"
           :key="index"
         >
           <img
             class="w-40 object-cover"
-            :src="cancion.album.cover_medium"
-            :alt="cancion.album.title"
+            :src="item.album.cover_medium"
+            :alt="item.album.title"
           />
           <article class="text-left w-40">
-            <h3 class="text-sm font-bold">{{ cancion.title }}</h3>
-            <p class="text-xs">{{ cancion.artist.name }}</p>
+            <h3 class="text-sm font-bold">{{ item.title }}</h3>
+            <p class="text-xs">{{ item.artist.name }}</p>
           </article>
         </div>
       </div>
@@ -104,61 +110,27 @@ export default {
   data() {
     return {
       nombre: "",
-      canciones: [],
-      cancion: {},
       seleccionado: false,
       player: new Audio(),
     };
   },
   computed: {
-    ...mapState(["isPlaying"]),
+    ...mapState(["isPlaying", "canciones", "cancion"]),
   },
   methods: {
-    ...mapActions(["guardarCancion", "play", "pause"]),
+    ...mapActions([
+      "guardarCancion",
+      "play",
+      "pause",
+      "buscarCancion",
+      "seleccionarCancion",
+    ]),
     busqueda(nombre) {
-      console.log(nombre);
-      this.axios
-        .get(
-          `https://pure-stream-06458.herokuapp.com/https://api.deezer.com/search?q=${nombre}`
-        )
-        .then((res) => {
-          this.canciones = res.data.data;
-          console.log(this.canciones);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      this.buscarCancion(nombre);
     },
-    async alerta(cancion) {
-      const obteniendo = await this.axios
-        .get(
-          `https://pure-stream-06458.herokuapp.com/https://api.deezer.com/artist/${cancion.artist.id}`
-        )
-        .then((res) => {
-          // this.cancion = { ...cancion, artista: res.data };
-          // console.log(this.cancion);
-          return res.data;
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-      this.cancion = { ...cancion, artista: obteniendo };
-      this.guardarCancion(cancion);
-      console.log(cancion);
-      //envia la informacion al padre
-      this.seleccionado = true;
-      this.pause(false);
+    alerta(item) {
+      this.seleccionarCancion(item);
     },
-    // play(cancion) {
-    //   this.player.src = cancion;
-    //   this.player.play();
-    //   this.cambioPlaying(true);
-    //   console.log(this.isPlaying);
-    // },
-    // pause() {
-    //   this.player.pause();
-    //   this.cambioPlaying(false);
-    // },
     comenzar() {
       this.play(true);
     },

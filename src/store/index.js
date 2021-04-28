@@ -1,10 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
+// import VueAxios from 'vue-axios';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
+		canciones: [],
 		cancion: {} && {
 			album: {
 				cover_medium:
@@ -21,12 +24,52 @@ export default new Vuex.Store({
 		},
 		isPlaying: false,
 		player: new Audio(),
-		volumen: 0.5,
+		volume: 0.5,
+		siguiente: '',
+		anterior: '',
 	},
 	mutations: {
-		OBTENER_CANCION(state, payload) {
+		SELECCIONAR_CANCION(state, payload) {
+			console.log(payload);
 			state.cancion = payload;
+			state.player.pause();
+			state.isPlaying = false;
 		},
+		SIGUIENTE_CANCION(state, payload) {
+			let indice = 0;
+			state.canciones.forEach((element, index) => {
+				element.id === payload ? (indice = index + 1) : -1;
+			});
+			if (indice >= 0 && indice <= state.canciones.length - 1) {
+				// console.log(indice);
+				const probando = state.canciones[indice];
+				this.dispatch('seleccionarCancion', probando);
+			} else {
+				alert('el fin de la lista');
+				// return;
+			}
+			// console.log(probando);
+		},
+		ANTERIOR_CANCION(state, payload) {
+			let indice = 0;
+			state.canciones.forEach((element, index) => {
+				element.id === payload ? (indice = index - 1) : -1;
+			});
+			if (indice >= 0 && indice <= state.canciones.length - 1) {
+				console.log(indice);
+				const probando = state.canciones[indice];
+				this.dispatch('seleccionarCancion', probando);
+			} else {
+				alert('el fin de la lista');
+				// return;
+			}
+			// console.log(probando);
+		},
+		OBTENER_CANCIONES(state, payload) {
+			console.log(payload);
+			state.canciones = payload;
+		},
+
 		DALE_PLAY(state, payload) {
 			state.isPlaying = payload;
 			state.player.src = state.cancion.preview;
@@ -38,12 +81,50 @@ export default new Vuex.Store({
 		},
 		VOLUMEN_CONTROLLER(state, payload) {
 			state.player.volume = payload;
+			state.volume = payload;
+			console.log(state.player.volume);
+		},
+		VOLUMEN_BUTTON(state, payload) {
+			state.player.volume = 0.1;
+			state.volume = 0.1;
+			console.log(state.player.volume);
 		},
 	},
 	actions: {
-		guardarCancion({ commit }, payload) {
-			commit('OBTENER_CANCION', payload);
+		seleccionarCancion({ commit }, payload) {
+			axios
+				.get(
+					`https://pure-stream-06458.herokuapp.com/https://api.deezer.com/artist/${payload.artist.id}`
+				)
+				.then((res) => {
+					const fusionar = { ...payload, artista: res.data };
+					// return res.data;
+					commit('SELECCIONAR_CANCION', fusionar);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
 		},
+		buscarCancion({ commit }, payload) {
+			axios
+				.get(
+					`https://pure-stream-06458.herokuapp.com/https://api.deezer.com/search?q=${payload}`
+				)
+				.then((res) => {
+					// return res.data;
+					commit('OBTENER_CANCIONES', res.data.data);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+		},
+		siguienteCancion({ commit }, payload) {
+			commit('SIGUIENTE_CANCION', payload);
+		},
+		anteriorCancion({ commit }, payload) {
+			commit('ANTERIOR_CANCION', payload);
+		},
+
 		play({ commit }, payload) {
 			commit('DALE_PLAY', payload);
 		},
@@ -53,6 +134,9 @@ export default new Vuex.Store({
 		subirBajar({ commit }, payload) {
 			commit('VOLUMEN_CONTROLLER', payload);
 		},
+	},
+	getters: {
+		canciones: (state) => state.canciones,
 	},
 	modules: {},
 });

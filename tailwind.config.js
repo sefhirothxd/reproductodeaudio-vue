@@ -24,6 +24,10 @@ module.exports = {
 				'1280px': '1280px',
 				'1330px': '1330px',
 			},
+			spacing: {
+				content: 'calc(100vh - 600px)',
+				'content-lg': 'calc(100vh - 500px)',
+			},
 			fontSize: {
 				'10px': '10px',
 				'22px': '22px',

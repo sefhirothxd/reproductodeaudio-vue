@@ -22,7 +22,7 @@
         </div>
       </article>
       <div class="flex items-center gap-5">
-        <button class="">
+        <button class="" @click="anteriorCancion(cancion.id)">
           <img src="../assets/anterior.png" alt="anterior" />
         </button>
         <button
@@ -42,10 +42,12 @@
             @click="pausar()"
           />
         </button>
-        <button><img src="../assets/siguiente.png" alt="siguiente" /></button>
+        <button @click="siguienteCancion(cancion.id)">
+          <img src="../assets/siguiente.png" alt="siguiente" />
+        </button>
       </div>
       <div class="flex">
-        <b-form-input
+        <!-- <b-form-input
           class="text-white"
           id="range-1"
           v-model="volumen"
@@ -54,8 +56,19 @@
           max="1"
           step="0.1"
           @click="subirBajar(volumen)"
-        ></b-form-input>
-        <p class="text-white font-semibold mx-5 w-16">{{ volumen * 100 }}%</p>
+        ></b-form-input> -->
+        <input
+          class="text-white"
+          id="range-1"
+          v-model="volumen"
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          @click="subirBajar(volumen)"
+        />
+
+        <p class="text-white font-semibold mx-5 w-16">{{ volume * 100 }}%</p>
       </div>
     </section>
   </div>
@@ -69,18 +82,25 @@ export default {
   data() {
     return {
       isActive: false,
-      contenido: this.cancion,
       isPlay: this.isPlaying,
-      volumen: 0.5,
+      volumen: this.volume,
     };
   },
   props: {},
   watch: {},
   computed: {
-    ...mapState(["cancion", "isPlaying"]),
+    ...mapState(["cancion", "isPlaying", "volume"]),
   },
   methods: {
-    ...mapActions(["guardarUsuario", "play", "pause", "subirBajar"]),
+    ...mapActions([
+      "guardarUsuario",
+      "play",
+      "pause",
+      "subirBajar",
+      "siguienteCancion",
+      "anteriorCancion",
+    ]),
+
     comenzar() {
       this.play(true);
     },

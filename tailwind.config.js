@@ -25,8 +25,8 @@ module.exports = {
 				'1330px': '1330px',
 			},
 			spacing: {
-				content: 'calc(100vh - 600px)',
-				'content-lg': 'calc(100vh - 500px)',
+				content: '31.25rem',
+				'content-lg': 'calc(100vh - 600px)',
 			},
 			fontSize: {
 				'10px': '10px',

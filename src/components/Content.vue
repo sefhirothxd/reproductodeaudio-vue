@@ -22,7 +22,7 @@
         <p>Francisco M.</p>
       </div>
     </div>
-    <div class="sm:flex mt-10 hidden h-64">
+    <div class="sm:flex mt-10 hidden h-64" v-if="seleccionado">
       <img
         class="object-cover"
         :src="cancion.album.cover_medium"
@@ -80,7 +80,7 @@
     <div class="mt-10">
       <h2 class="text-red-principal text-22px text-left mb-5">Resultados</h2>
       <div
-        class="flex flex-wrap gap-4 justify-center overflow-y-auto h-content-lg sm:h-content w-full"
+        class="flex flex-wrap gap-4 justify-center overflow-y-scroll max-h-full w-full"
       >
         <div
           class=""
@@ -130,6 +130,7 @@ export default {
     },
     alerta(item) {
       this.seleccionarCancion(item);
+      this.seleccionado = true;
     },
     comenzar() {
       this.play(true);
@@ -137,8 +138,6 @@ export default {
     pausar() {
       this.pause(false);
     },
-    volumenAlto() {},
-    volumenBajo() {},
   },
 };
 </script>

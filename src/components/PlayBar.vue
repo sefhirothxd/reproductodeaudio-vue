@@ -81,7 +81,7 @@ export default {
   name: "PlayBar",
   data() {
     return {
-      isActive: false,
+      isActive: true,
       isPlay: this.isPlaying,
       volumen: this.volume,
     };
@@ -109,14 +109,14 @@ export default {
     },
   },
   mounted() {
-    window.document.onscroll = () => {
-      let cambio = document.getElementById("bar");
-      if (window.scrollY >= 0) {
-        this.isActive = true;
-      } else {
-        this.isActive = false;
-      }
-    };
+    // window.document.onscroll = () => {
+    //   let cambio = document.getElementById("bar");
+    //   if (window.scrollY >= 0) {
+    //     this.isActive = true;
+    //   } else {
+    //     this.isActive = false;
+    //   }
+    // };
   },
 };
 </script>
